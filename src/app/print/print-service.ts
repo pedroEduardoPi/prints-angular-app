@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { PrintData } from './PrintDataModel';
 import { ErrorService } from '../shared/error.service';
 import { catchError, map, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +12,12 @@ export class PrintService {
   private prints = signal<PrintData[]>([]);
   private httpClient = inject(HttpClient);
   private errorService = inject(ErrorService);
-
+ 
+  private readonly API = `${environment.apiUrl}/prints/report`;
 
   loadPrintsReport() {
     return this.getPrints(
-      'http://localhost:8080/prints/report',
+      this.API,
       'Something went wrong fetching places available... Please try again later.',
     );
   }

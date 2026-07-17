@@ -42,7 +42,7 @@
 
 .card .pulse {
     position: absolute;
-    top: 60px;
+    top: 64px;
     right: 40px;
     width: 14px;
     height: 14px;
@@ -50,35 +50,43 @@
     background-color: var(--accent-clr);
 }
 
-.card .pulse::after{
+.card .pulse::after {
     content: '';
     position: absolute;
-    left: -1px;
-    top: -1px;
+
+    left: 50%;
+    top: 50%;
+
     width: 150%;
     height: 150%;
+
     border-radius: 50%;
     border: 1px solid var(--accent-clr);
-    animation: pulse 3s linear infinite;
+
+    transform: translate(-50%, -50%) scale(0);
     transform-origin: center;
+
     opacity: .8;
-    scale: 0;
+    animation: pulse 3s linear infinite;
 }
 
 @keyframes pulse {
     70% {
-        scale: 0;
+        transform: translate(-50%, -50%) scale(0);
         opacity: .8;
     }
 
     100% {
-        scale: 3;
+        transform: translate(-50%, -50%) scale(2);
         opacity: 0;
     }
 }
 
 #total {
     margin-right: 60px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.5;
 }
 
 .area-chart {

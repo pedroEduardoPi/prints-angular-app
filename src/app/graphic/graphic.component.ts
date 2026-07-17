@@ -10,6 +10,7 @@ import { PrintData } from '../print/PrintDataModel';
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.css',
 })
+
 export class GraphicComponent implements OnInit {
   prints = signal<PrintData[] | undefined>(undefined);
   totalPrintsPerMonth = signal<number>(0);

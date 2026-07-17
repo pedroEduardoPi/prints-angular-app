@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { PrintService } from '../print/print-service';
 import { PrintData } from '../print/PrintDataModel';
+import { printsPerDay } from './util/graphic.util';
 
 @Component({
   standalone: true,
@@ -12,15 +13,16 @@ import { PrintData } from '../print/PrintDataModel';
 })
 
 export class GraphicComponent implements OnInit {
-  prints = signal<PrintData[] | undefined>(undefined);
+  
+  private prints = signal<PrintData[] | undefined>(undefined);
   totalPrintsPerMonth = signal<number>(0);
-  printService = inject(PrintService);
+  private printService = inject(PrintService);
   private chart?: Chart;
-  destroyRef: any;
+  private destroyRef = inject(DestroyRef);
   error: any;
 
   ngOnInit(): void {
-    this.printService.loadPrintsReport().subscribe({
+    const subscription = this.printService.loadPrintsReport().subscribe({
       next: (prints) => {
         this.prints.set(prints);
         this.totalPrintsPerMonth.set(prints.length);
@@ -30,6 +32,8 @@ export class GraphicComponent implements OnInit {
         console.error(err);
       },
     });
+
+    this.destroyRef.onDestroy(subscription.unsubscribe);
   }
 
   private createChart(prints: PrintData[]) {
@@ -37,31 +41,7 @@ export class GraphicComponent implements OnInit {
       return;
     }
 
-    const counts = new Map<string, number>();
-
-    const firstDate = new Date(prints[0].dataImpressao!);
-    const year = firstDate.getFullYear();
-    const month = firstDate.getMonth();
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const label = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}`;
-
-      counts.set(label, 0);
-    }
-
-    for (const print of prints) {
-      if (!print.dataImpressao) continue;
-
-      const date = new Date(print.dataImpressao);
-
-      const label = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}`;
-
-      counts.set(label, (counts.get(label) ?? 0) + 1);
-    }
+    const counts = printsPerDay(prints);
 
     const labels = Array.from(counts.keys());
     const values = Array.from(counts.values());

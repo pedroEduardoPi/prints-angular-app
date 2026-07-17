@@ -10,14 +10,23 @@ nav {
 .logo {
     display: flex;
     align-items: center;
-    margin: 0 0 0 34px;
-    gap: 36px;
+    justify-content: center;
+    margin: 0 0 0 0px;
+    /* gap: 16px; */
     font-size: 20px;
 }
 
 .logo-title {
     line-height: 1;
     padding-bottom: 2px;
+}
+
+.logo img {
+    display: block;
+    margin-bottom: 24px;
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
 }
 
 button {

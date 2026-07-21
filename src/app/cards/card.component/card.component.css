@@ -4,3 +4,33 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
+
+.store-card {
+    font-family: 'Elms Sans';
+    padding: 24px;
+    background-color: #1b1b1b;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.store-card h2{
+    color: var(--text-clr);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    margin: 0 0 2px;
+
+}
+
+.store-card-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.store-card-label p {
+    color: var(--secondary-text-clr);
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+

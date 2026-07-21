@@ -1,0 +1,6 @@
+.stores-container {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}

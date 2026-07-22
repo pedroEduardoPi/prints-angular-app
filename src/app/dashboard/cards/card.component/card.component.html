@@ -1,0 +1,9 @@
+<div class="store-card">
+  <h2>{{ report().unit }}</h2>
+  <div class="store-card-label">
+    <p>{{ 'Total: ' + totalPrintsPerMonth().toLocaleString('pt-BR') }}</p>
+  </div>
+  <div class="area-chart">
+    <canvas id="pvChart"></canvas>
+  </div>
+</div>

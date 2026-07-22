@@ -1,4 +1,4 @@
-import { PrintData } from "../../print/PrintDataModel";
+import { PrintData } from "../../../print/PrintDataModel";
 
 export function printsPerDay(prints: PrintData[]): Map<string, number> {
 

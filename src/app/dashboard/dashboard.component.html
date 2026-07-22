@@ -1,0 +1,7 @@
+<app-graphic />
+
+<div class="cards">
+  @for (report of reports(); track report.unit) {
+    <app-card [report]="report" />
+  }
+</div>

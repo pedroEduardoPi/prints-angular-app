@@ -1,0 +1,7 @@
+
+app-dashboard {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    row-gap: 24px;
+    grid-auto-rows: 0;
+}

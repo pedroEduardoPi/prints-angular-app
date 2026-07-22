@@ -1,9 +1,9 @@
-.stores-container {
+/* .stores-container {
     grid-row: 2;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-}
+} */
 
 .store-card {
     font-family: 'Elms Sans';
@@ -19,7 +19,6 @@
     font-weight: 500;
     letter-spacing: .5px;
     margin: 0 0 2px;
-
 }
 
 .store-card-label {

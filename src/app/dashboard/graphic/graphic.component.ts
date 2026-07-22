@@ -1,8 +1,8 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { Chart } from 'chart.js/auto';
-import { PrintService } from '../print/print-service';
-import { PrintData } from '../print/PrintDataModel';
 import { printsPerDay } from './util/graphic.util';
+import { PrintData } from '../../print/PrintDataModel';
+import { PrintService } from '../../print/print-service';
 
 @Component({
   standalone: true,
@@ -13,7 +13,8 @@ import { printsPerDay } from './util/graphic.util';
 })
 
 export class GraphicComponent implements OnInit {
-  
+
+
   private prints = signal<PrintData[] | undefined>(undefined);
   totalPrintsPerMonth = signal<number>(0);
   private printService = inject(PrintService);

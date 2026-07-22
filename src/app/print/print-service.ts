@@ -4,6 +4,7 @@ import { PrintData } from './PrintDataModel';
 import { ErrorService } from '../shared/error.service';
 import { catchError, map, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { PrintByUnit } from './print-by-unit.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,4 +40,11 @@ export class PrintService {
   );
 }
 
+getPrintsByUnit(url: string, errorMessage: string){
+  return this.httpClient.get<PrintByUnit[]>(url).pipe(
+    catchError(() => {
+      return throwError(() => new Error(errorMessage));
+    })
+  );
+}
 }

@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  NgModule,
   OnDestroy,
   ViewChild,
   input,
@@ -11,7 +12,8 @@ import {
 import { Chart } from 'chart.js';
 import { PrintData } from '../../../print/PrintDataModel';
 import { PrintByUnit } from '../../../print/print-by-unit.model';
-import { printsPerDay } from '../../graphic/util/graphic.util';
+import { getChartColor, printsPerDay } from '../../graphic/util/graphic.util';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -19,7 +21,10 @@ import { printsPerDay } from '../../graphic/util/graphic.util';
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
 })
-export class CardComponent {
+export class CardComponent implements AfterViewInit, OnDestroy {
+
+  constructor(private router: Router) {}
+  
   @ViewChild('chartCanvas')
   chartCanvas!: ElementRef<HTMLCanvasElement>;
 
@@ -27,70 +32,76 @@ export class CardComponent {
 
   totalPrintsPerMonth = signal<number>(0);
 
+  protected readonly getChartColor = getChartColor;
+
   private chart?: Chart;
 
-  // ngAfterViewInit() {
-  //   // exemplo:
-  //   // this.createChart(this.report().prints);
-  // }
+  ngAfterViewInit() {
+    this.createChart();
+  }
 
-  // private createChart(prints: PrintData[]) {
-  //   if (prints.length === 0) {
-  //     return;
-  //   }
+  ngOnDestroy() {
+    this.chart?.destroy();
+  }
 
-  //   const counts = printsPerDay(prints);
+  private createChart() {
+    const labels = this.report().prints.map((p) => p.date);
+    const values = this.report().prints.map((p) => p.total);
 
-  //   const labels = Array.from(counts.keys());
-  //   const values = Array.from(counts.values());
+    this.totalPrintsPerMonth.set(values.reduce((acc, value) => acc + value, 0));
 
-  //   if (this.chart) {
-  //     this.chart.destroy();
-  //   }
+    const color = getChartColor(this.report().unit) ?? {
+      border: '#FFFFFF',
+      background: 'rgba(255,255,255,0.2)',
+    };
 
-  //   this.chart = new Chart(this.chartCanvas.nativeElement, {
-  //     type: 'line',
+    this.chart = new Chart(this.chartCanvas.nativeElement, {
+      type: 'line',
 
-  //     data: {
-  //       labels,
+      data: {
+        labels,
+        datasets: [
+          {
+            data: values,
+            fill: true,
+            tension: 0.4,
 
-  //       datasets: [
-  //         {
-  //           label: 'Impressões',
-  //           data: values,
-  //           fill: true,
-  //           tension: 0.4,
+            borderColor: color.border,
+            backgroundColor: color.background,
 
-  //           borderColor: '#7A9A01',
-  //           backgroundColor: 'rgba(122, 154, 1, 0.25)',
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHitRadius: 20,
+          },
+        ],
+      },
 
-  //           pointRadius: 0,
-  //           pointHoverRadius: 5,
-  //           pointHitRadius: 20,
-  //         },
-  //       ],
-  //     },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
 
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
 
-  //       plugins: {
-  //         legend: {
-  //           display: false,
-  //         },
-  //       },
+        scales: {
+          x: {
+            display: false,
+          },
+          y: {
+            display: false,
+          },
+        },
+      },
+    });
+  }
 
-  //       scales: {
-  //         x: {
-  //           display: false,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
+  
 
-  // ngOnDestroy() {
-  //   this.chart?.destroy();
-  // }
+  goToDetails() {
+    console.log(this.report().unit);
+    this.router.navigate(['./dashboard', this.report().unit]);
+  }
 }

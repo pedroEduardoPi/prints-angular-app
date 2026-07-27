@@ -8,3 +8,11 @@
   gap: 50px;
   row-gap: 50px;
 }
+
+app-graphic {
+  grid-row: 1;
+}
+
+app-cards {
+  grid-row: 2;
+}

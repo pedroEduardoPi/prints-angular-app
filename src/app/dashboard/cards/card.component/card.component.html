@@ -1,9 +1,12 @@
-<div class="store-card">
+<div class="store-card"
+[style.--accent-clr]="getChartColor(report().unit).border"
+(click)="goToDetails()">
   <h2>{{ report().unit }}</h2>
   <div class="store-card-label">
     <p>{{ 'Total: ' + totalPrintsPerMonth().toLocaleString('pt-BR') }}</p>
   </div>
+  <div class="store-pulse"></div>
   <div class="area-chart">
-    <canvas id="pvChart"></canvas>
+    <canvas #chartCanvas></canvas>
   </div>
 </div>

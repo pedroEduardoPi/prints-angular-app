@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.printsService
       .getPrintsByUnit(
-        'https://prints-spring-app-production.up.railway.app/prints/report/unit' +'/prints/report/unit',
+        'https://prints-spring-app-production.up.railway.app' +'/prints/report/unit',
         'Something went wrong with fetching report',
       )
       .pipe(takeUntilDestroyed(this.destroyRef))

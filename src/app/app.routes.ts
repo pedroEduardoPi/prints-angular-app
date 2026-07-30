@@ -8,7 +8,7 @@ export const routes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'dashboard/:unit',
+    path: ':unit',
     component: StoreDashboardComponent,
   },
 ];

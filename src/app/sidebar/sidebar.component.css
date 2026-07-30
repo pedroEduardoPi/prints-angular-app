@@ -1,6 +1,7 @@
 nav {
     width: 230px;
     height: 40%;
+    margin-top: 24px;
     font-family: 'Elms Sans';
     border: 1.5px solid var(--line-clr);
     border-radius: 10px;

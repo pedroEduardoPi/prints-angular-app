@@ -16,6 +16,7 @@ import { getChartColor, printsPerDay } from '../../graphic/util/graphic.util';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-card',
   imports: [],
   templateUrl: './card.component.html',
@@ -41,6 +42,7 @@ export class CardComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if(this.chart)
     this.chart?.destroy();
   }
 
@@ -98,10 +100,7 @@ export class CardComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  
-
   goToDetails() {
-    console.log(this.report().unit);
-    this.router.navigate(['./dashboard', this.report().unit]);
+    this.router.navigate([this.report().unit]);
   }
 }

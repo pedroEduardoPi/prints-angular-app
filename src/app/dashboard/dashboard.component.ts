@@ -5,6 +5,8 @@ import { CardComponent } from './cards/card.component/card.component';
 import { PrintByUnit } from '../print/print-by-unit.model';
 import { PrintService } from '../print/print-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -16,15 +18,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class DashboardComponent implements OnInit {
   reports = signal<PrintByUnit[]>([]);
   private printsService = inject(PrintService);
-  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.printsService
       .getPrintsByUnit(
-        'https://prints-spring-app-production.up.railway.app' +'/prints/report/unit',
+        `${environment.apiUrl}/prints/report/unit`,
         'Something went wrong with fetching report',
       )
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe()
       .subscribe({
         next: (prints) => {
           this.reports.set(prints);

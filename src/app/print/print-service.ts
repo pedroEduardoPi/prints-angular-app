@@ -23,15 +23,6 @@ export class PrintService {
     );
   }
 
-  // private getPrints(url: string, errorMessage: string) {
-  //   return this.httpClient.get<PrintData[]>(url).pipe(
-  //     map((resData) => resData.places),
-  //     catchError((error) => {
-  //       return throwError(() => new Error(errorMessage));
-  //     }),
-  //   );
-  // }
-
   private getPrints(url: string, errorMessage: string) {
   return this.httpClient.get<PrintData[]>(url).pipe(
     catchError(() => {

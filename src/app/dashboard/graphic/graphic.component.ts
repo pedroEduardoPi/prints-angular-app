@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { printsPerDay } from './util/graphic.util';
 import { PrintData } from '../../print/PrintDataModel';
@@ -12,7 +12,7 @@ import { PrintService } from '../../print/print-service';
   styleUrl: './graphic.component.css',
 })
 
-export class GraphicComponent implements OnInit {
+export class GraphicComponent implements OnInit, OnDestroy {
 
 
   private prints = signal<PrintData[] | undefined>(undefined);
@@ -33,8 +33,12 @@ export class GraphicComponent implements OnInit {
         console.error(err);
       },
     });
+  }
 
-    this.destroyRef.onDestroy(subscription.unsubscribe);
+  ngOnDestroy() {
+    if(this.chart){
+      this.chart.destroy();
+    }
   }
 
   private createChart(prints: PrintData[]) {

@@ -1,0 +1,19 @@
+<div class="card">
+  <h2>Prints by department comparision</h2>
+
+  @for (department of departments()?.departments; track department.department) {
+    <div class="department">
+      <div class="department-info">
+        <span class="department-name">
+          {{ department.department }}
+        </span>
+
+        <span class="department-values">
+          {{ department.total | number }} · {{ department.percentage | number: '1.1-1' }}%
+        </span>
+      </div>
+
+        <div class="progress-value" [style.width.%]="department.percentage"></div>
+    </div>
+  }
+</div>

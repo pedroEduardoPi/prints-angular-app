@@ -6,7 +6,7 @@ import { PrintByUnit } from '../print/print-by-unit.model';
 import { PrintService } from '../print/print-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -18,18 +18,25 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   reports = signal<PrintByUnit[]>([]);
   private printsService = inject(PrintService);
+  private destroyRef = inject(DestroyRef);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.printsService
-      .getPrintsByUnit(
-        `${environment.apiUrl}/prints/report/unit`,
-        'Something went wrong with fetching report',
-      )
-      .pipe()
-      .subscribe({
-        next: (prints) => {
-          this.reports.set(prints);
-        },
-      });
-  }
+  this.route.paramMap
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(params => {
+      const unit = params.get('unit');
+
+      this.printsService
+        .getPrintsByUnit(
+          unit,
+          'Something went wrong with fetching report'
+        )
+        .subscribe({
+          next: (prints) => {
+            this.reports.set(prints);
+          },
+        });
+    });
+}
 }
